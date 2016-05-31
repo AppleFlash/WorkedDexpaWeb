@@ -1,0 +1,116 @@
+﻿@using Dexpa.WebSite.Helpers
+@{
+    ViewBag.Title = "Регистрация";
+}
+<div class="row">
+    <div class="container">
+        <div class="row pageheader">
+            <div class="col-sm-12"><h2>Регистрация нового пользователя</h2></div>
+        </div>
+        <div class="row" ng-controller="AccountManageCtrl">
+            <div class="containerWithoutPageHeader">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form id="addDriverForm" ng-submit="registerAccount(account)">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="control-label">ФИО</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control input-sm" placeholder="Фамилия" ng-model="account.LastName" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control input-sm" placeholder="Имя" ng-model="account.Name" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control input-sm" placeholder="Отчество" ng-model="account.MiddleName" />
+                                </div>
+                            </div>
+                            <div class="row bottomBorder">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Телефон</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Телефон" ng-model="account.PhoneNumber" ng-blur="formatPhone(account.PhoneNumber)" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Email</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Email" ng-model="account.Email" ng-blur="checkEmail(account.Email)" />
+                                </div>
+                            </div>
+                            <div class="row bottomBorder">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-4">
+                                            <label class="control-label">Имя пользователя</label>
+                                            <input type="text" class="form-control input-sm" placeholder="Имя пользователя" ng-model="account.UserName" />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="control-label">Роль</label>
+                                            @if (GlobalConfiguration.roleAccessModel.CanEditAccounts)
+                                            {
+                                                <select class="form-control" ng-model="account.Role"
+                                                        ng-options="role.Name for role in roles track by role.Id"></select>
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control input-sm" placeholder="Роль" ng-model="account.Role.Name" readonly="readonly" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row padding10">
+                                <div class="col-sm-4">
+                                    <input type="checkbox" ng-model="account.HasAccess" />
+                                    <label class="control-label">Доступ разрешен</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Новый пароль</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Новый пароль" ng-model="account.NewPassword" />
+                                </div>
+                            </div>
+                            <div class="row bottomBorder">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Подтверждение</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Подтверждение" ng-model="account.ConfirmPassword" />
+                                </div>
+                            </div>
+                            <div class="row bottomBorder">
+                                <h5>IP Телефон</h5>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Логин</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Логин" ng-model="account.IpPhoneLogin" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Пароль</label>
+                                    <input type="text" class="form-control input-sm" placeholder="Пароль" ng-model="account.IpPhonePassword" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Провайдер</label>
+                                    <input type="text" class="form-control input-sm" placeholder="myphone.ru" ng-model="account.IpPhoneProvider" />
+                                </div>
+                            </div>
+                            @if (GlobalConfiguration.roleAccessModel.HasAccess)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a href="@Url.Action("Index","Admin")" class="btn btn-success btn-sm pull-left"><i class="fa fa-chevron-left"></i> К списку</a>
+                                        <input class="btn btn-success pull-right btn-sm" type="submit" value="Сохранить" />
+                                    </div>
+                                </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/AdditionalScripts/Authorization.js"></script>
+    <script src="~/Scripts/AdditionalScripts/AccountAddScript.js"></script>
+}

@@ -1,0 +1,50 @@
+﻿<div id="newsPanel" class="containerWithPageHeader" ng-controller="NewsMesagesCtrl">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Новости</h3>
+            </div>
+        </div>
+        <div class="row bottomBorder">
+            <div class="row" id="searchNewsPanel">
+                <div class="col-sm-4">
+                    <div class="btn btn-success btn-sm" ng-click="openCloseAddPanel()"><i class="fa fa-plus"></i> Добавить</div>
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" ng-model="newsSearch" placeholder="Поиск..." class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="row" id="addNewsForm">
+                <div class="col-sm-4">
+                    <div class="btn btn-success btn-sm" ng-click="addNewsMessage('@User.Identity.Name')">Сохранить</div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="btn btn-success btn-sm pull-right" ng-click="openCloseAddPanel()"><i class="fa fa-reply"></i> Назад</div>
+                </div>
+                <div class="col-sm-12 marginTop6">
+                    <label for="newMessage">Сообщение:</label>
+                    <textarea maxlength="512" ng-model="newNewsMessage.message" placeholder="Сообщение" id="newMessage" class="form-control input-sm"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="news in newsList | filter: newsSearch">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <i class="fa fa-check text-success" ng-show="news.isSend"></i>
+                            </div>
+                            <div class="col-sm-11 newsText">
+                                <p>{{news.message}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="pull-right">{{news.timeStamp | fullDate}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
