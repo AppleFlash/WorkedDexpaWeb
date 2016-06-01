@@ -104,12 +104,23 @@ function selectBalloonContent(point, check) {
         case OrderCancelled:
             {
                 var state = "Отменен клиентом";
-                return CreateTrackPointBaloonContentCancelled(point, state, image);
+                var cancl = check.orderPoints;
+                for (var i = 0; i < cancl.length; i++)
+                {
+                    if (cancl[i].pointId === point.id)
+                        return CreateTrackPointBaloonContentCancelled(point, cancl[i], state, image);
+                }
+                return null;
             }
         case OrderFailed:
             {
                 var state = "Провален водителем";
-                return CreateTrackPointBaloonContentFailed(point, state, image);
+                var failed = check.orderPoints;
+                for (var i = 0; i < failed.length; i++) {
+                    if (failed[i].pointId === point.id)
+                        return CreateTrackPointBaloonContentFailed(point, failed[i], state, image);
+                }
+                return null;
             }
         default:
     }
@@ -141,10 +152,9 @@ function CreateTrackPointBaloonContent(point, state, image) {
         '<tr><td class="textRight">Направление:</td><td> ' + point.direction + '</td></tr>' +
         '</table>';
 }
-function CreateTrackPointBaloonContentNewOrdr(point, newOrdr, state, image) {
+function CreateTrackPointBaloonContentNewOrdr(point, newOrdr, state) {
     return '<table class="smallFontSize baloonTable">' +
         '<tr>' +
-            '<td rowspan="4"><img class="imageBalloon" src="/Content/Images/DriverState/' + image + '"></td>' +
             '<td class="addrPos">' + state + '</td>' +
 
         '</tr>' +
@@ -221,22 +231,22 @@ function CreateTrackPointBaloonContentCompleted(cmpld, point, state, image) {
             '<tr><td class="textRight"><b>Сумма:</td><td> <b>' + cmpld.cost + ' руб</b></td></tr>' +
         '</table>';
 }
-function CreateTrackPointBaloonContentCancelled(cnsld, state, image) {
+function CreateTrackPointBaloonContentCancelled(cnsld, cancl, state, image) {
     return '<table class="smallFontSize baloonTable">' +
         '<tr>' +
-        '<td colspan="3"><img class="imageBalloon" src="/Content/Images/DriverState/' + image + '"></td>' +
+        '<td rowspan="3"><img class="imageBalloon" src="/Content/Images/DriverState/' + image + '"></td>' +
+        '<td class="addrPosClassic"><a href="/Dispatcher/ShowOrder/' + cnsld.orderId + '">Заказ №' + cancl.orderId + '</a></td>' +
         '</tr>' +
-        '<tr><td class="addrPosClassic"><a href="/Dispatcher/ShowOrder/' + cnsld.orderId + '">Заказ №' + cnsld.orderId + '</a></td></tr>' +
         '<tr><td class="colorTxtPnt">' + state + '</td></tr>' +
         '<tr><td> ' + convertDateToString(cnsld.timestamp) + '</td></tr>' +
         '</table>';
 }
-function CreateTrackPointBaloonContentFailed(fld, state, image) {
+function CreateTrackPointBaloonContentFailed(fld, failed, state, image) {
     return '<table class="smallFontSize baloonTable">' +
             '<tr>' +
-                '<td colspan="3"><img class="imageBalloon" src="/Content/Images/DriverState/' + image + '"></td>' +
+                '<td rowspan="3"><img class="imageBalloon" src="/Content/Images/DriverState/' + image + '"></td>' +
+        '<td class="addrPosClassic"><a href="/Dispatcher/ShowOrder/' + failed.orderId + '">Заказ №' + failed.orderId + '</a></td>' +
             '</tr>' +
-        '<tr><td class="addrPosClassic"><a href="/Dispatcher/ShowOrder/' + fld.orderId + '">Заказ №' + fld.orderId + '</a></td></tr>' +
         '<tr><td class="colorTxtPnt">' + state + '</td></tr>' +
         '<tr><td> ' + convertDateToString(fld.timestamp) + '</td></tr>' +
         '</table>';

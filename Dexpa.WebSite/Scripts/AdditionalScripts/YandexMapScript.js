@@ -94,8 +94,10 @@ function DrawTrackPoints(points) {
     var check = points;
     points = points.points;
     dexpaMap.geoObjects.removeAll();
-
-    if (points.length > 0) {
+    if (points.length <= 0) {
+        showNotification("danger", "Нет поездок по текущей дате");
+    }
+    else {
         var eps = 0.000001;
         var firstPoint = points[0];
         var coordsForLine = new Array();
